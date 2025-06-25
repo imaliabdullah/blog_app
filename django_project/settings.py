@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -82,14 +82,9 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog_app',
-        'USER': 'postgres',
-        'PASSWORD': 'BFSfXCqWaXzhPjvugRarfMCKDkIlebZC',
-        'HOST': 'localhost',  # 'localhost' if running locally, or your cloud DB host
-        'PORT': '5432',          # default PostgreSQL port
-    }
+    'default': dj_database_url.config(
+        default="postgresql://postgres:BFSfXCqWaXzhPjvugRarfMCKDkIlebZC@postgres.railway.internal:5432/railway"
+    )
 }
 
 
