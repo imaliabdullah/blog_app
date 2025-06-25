@@ -23,9 +23,10 @@ ENVIRONMENT = os.environ.get('DJANGO_ENV', 'development')
 
 if ENVIRONMENT == 'production':
     DEBUG = False
-    ALLOWED_HOSTS = ["blogapp-production-f4f1.up.railway.app"]
+    ALLOWED_HOSTS = ["blogapp-production-f4f1.up.railway.app", "localhost", "0.0.0.0:8080"]
     CSRF_TRUSTED_ORIGINS = [
         'https://blogapp-production-f4f1.up.railway.app',
+        # ... any other trusted origins
     ]
     # Production database config, etc.
 else:
