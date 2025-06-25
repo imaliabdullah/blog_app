@@ -13,8 +13,28 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import dj_database_url
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+ENVIRONMENT = os.environ.get('DJANGO_ENV', 'development')
+
+if ENVIRONMENT == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ["blogapp-production-f4f1.up.railway.app"]
+    CSRF_TRUSTED_ORIGINS = [
+        'https://blogapp-production-f4f1.up.railway.app',
+    ]
+    # Production database config, etc.
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:8000',
+    ]
+    # Local database config, etc.
 
 
 # Quick-start development settings - unsuitable for production
@@ -22,15 +42,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-2$4g=f)zlygbrdeswwf0pqg8(agnkol)*691gc*%0%m9fia(xm'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["blogapp-production-f4f1.up.railway.app", "localhost", "0.0.0.0:8080"]
-CSRF_TRUSTED_ORIGINS = [
-    'https://blogapp-production-f4f1.up.railway.app',
-    # ... any other trusted origins
-]
 
 
 # Application definition
@@ -81,13 +92,26 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASE_URL="postgresql://postgres:BFSfXCqWaXzhPjvugRarfMCKDkIlebZC@postgres.railway.internal:5432/railway"
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL
-    )
-}
+if ENVIRONMENT == 'production':
+    # Use Railway/PostgreSQL in production
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL')
+        )
+    }
+else:
+    # Use local PostgreSQL (or SQLite) in development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'blog_app',
+            'USER': 'postgres',
+            'PASSWORD': 'admin',
+            'HOST': 'localhost',
+            'PORT': '5433',
+        }
+    }
 
 
 # Password validation
