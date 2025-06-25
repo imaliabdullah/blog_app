@@ -19,23 +19,20 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENVIRONMENT = os.environ.get('DJANGO_ENV', 'development')
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
 if ENVIRONMENT == 'production':
     DEBUG = False
-    ALLOWED_HOSTS = ["blogapp-production-f4f1.up.railway.app", "localhost", "0.0.0.0:8080"]
-    CSRF_TRUSTED_ORIGINS = [
-        'https://blogapp-production-f4f1.up.railway.app',
-        # ... any other trusted origins
+    ALLOWED_HOSTS = [
+        "blogapp-production-f4f1.up.railway.app",
+        "localhost",
+        "127.0.0.1",
     ]
-    # Production database config, etc.
+    CSRF_TRUSTED_ORIGINS = ["https://blogapp-production-f4f1.up.railway.app",]
 else:
     DEBUG = True
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-    CSRF_TRUSTED_ORIGINS = [
-        'http://localhost:8000',
-    ]
-    # Local database config, etc.
+    CSRF_TRUSTED_ORIGINS = ["http://localhost:8000",]
 
 
 # Quick-start development settings - unsuitable for production
